@@ -73,6 +73,27 @@ Then power both halves on at the same time → they auto-pair.
 
 ZMK firmware configuration for a Ferris Sweep (cradio) with nice!nano v2.
 
+## Right layer
+
+Reached by **holding the right inner thumb** (`&lt 1 BSPC`,
+`config/cradio.keymap:47`). Provides a numpad and editing keys on the left
+half, navigation on the right half, and function keys on the bottom-right row.
+
+```
+╭────┬────┬────┬────┬────╮   ╭────┬────┬────┬────┬────╮
+│INS │ 1  │ 2  │ 3  │    │   │HOME│PGDN│PGUP│END │ :  │
+├────┼────┼────┼────┼────┤   ├────┼────┼────┼────┼────┤
+│DEL │ 4  │ 5  │ 6  │    │   │LEFT│DOWN│ UP │RGHT│ ;  │
+├────┼────┼────┼────┼────┤   ├────┼────┼────┼────┼────┤
+│CAPS│ 7  │ 8  │ 9  │ 0  │   │ F1 │ F2 │F10 │F11 │F12 │
+╰────┴────┴────┼────┼────┤   ├────┼────┼────┴────┴────╯
+               │    │ESC │   │    │BSP │
+               ╰────┴────╯   ╰────┴────╯
+```
+
+The function keys (`F1`/`F2`/`F10`/`F11`/`F12`) sit on the `N`/`M`/`,`/`.`/`/`
+positions: hold the right inner thumb, then press with the right hand.
+
 ## Bluetooth Pairing
 
 ### How the tri-layer works
