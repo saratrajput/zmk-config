@@ -15,6 +15,8 @@
 
 ## Getting the firmware (.uf2 files)
 
+> **Shortcut:** Pre-compiled `.uf2` files are ready in the `uf2_files/` directory if you don't want to follow all the steps below. Use `uf2_files/default_config/` for the default keymap, or `uf2_files/with_function_keys_config/` for the keymap with function keys, then skip to [Flashing](#flashing).
+
 1. Use the ZMK config template: `https://github.com/zmkfirmware/zmk-config`.
 2. During setup wizard pick:
    - Board: `nice_nano_v2`
