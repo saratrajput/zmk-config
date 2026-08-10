@@ -51,6 +51,39 @@
 - The **peripheral** half (right) connects wirelessly to the central — it should **not** appear as its own keyboard to the computer. That is correct behavior.
 - If keys on the right half don't register at all on the host: pairing between halves is broken.
 
+## Battery level for both halves
+
+By default the host only ever sees **one** battery level: the central (left) half. The
+right half's level never leaves the keyboard.
+
+`config/cradio.conf` enables the two ZMK options that fix the firmware side:
+
+```
+CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_FETCHING=y   # right half reports to the left
+CONFIG_ZMK_SPLIT_BLE_CENTRAL_BATTERY_LEVEL_PROXY=y      # left half exposes it to the host
+```
+
+Rebuild and flash **both** halves after changing these.
+
+That alone is not enough on macOS. The left half now publishes two Battery Service
+instances over BLE, but macOS's Bluetooth menu reads only the first one, so it still shows a
+single number. `tools/zmk-battery-menubar/` is a small menu bar app that reads both:
+
+```bash
+cd tools/zmk-battery-menubar
+./build.sh
+open ZMKBattery.app
+```
+
+- Grant Bluetooth access when macOS asks (System Settings → Privacy & Security → Bluetooth).
+- The menu bar shows `⌨ 82/76`; click it for per-half detail and when it last updated.
+- Values refresh every `CONFIG_ZMK_BATTERY_REPORT_INTERVAL` seconds (currently 600, so up to
+  10 minutes between updates).
+- While the keyboard is deep-sleeping or disconnected it shows `--`, and reconnects on its own.
+- To start it automatically: System Settings → General → Login Items → add `ZMKBattery.app`
+  (move it to `/Applications` first if you don't want it running from the repo).
+- Needs only the Command Line Tools; `build.sh` uses `swiftc` directly.
+
 ## Fixing right-half not registering / pairing reset
 
 For each half:
@@ -66,6 +99,18 @@ Then power both halves on at the same time → they auto-pair.
 - Home row keys (`asdfg` / `hjkl;`) become Shift/Ctrl/Alt/GUI when held, letters when tapped.
 - Check `config/cradio.keymap`: bindings like `&hm`, `&mt`, `&hml`, `&hmr` indicate HRMs.
 - To disable: replace with plain `&kp <KEY>` and rebuild + reflash.
+
+## Symbols type the wrong character (e.g. tilde types `±`)
+
+- Not a firmware/keymap bug — ZMK only sends **US-ANSI** scan codes (`~` is
+  `&kp TILDE` = Shift+Grave). The glyph is decided by the **host keyboard layout**.
+- `±` from the tilde key means macOS has the keyboard's **physical type misdetected as
+  ISO**, which swaps the grave/tilde key with the section/± key.
+- Fix on macOS:
+  - **System Settings → Keyboard → Keyboard Type… (Change Keyboard Type assistant)** →
+    select **ANSI** (United States and others), not ISO.
+  - **System Settings → Keyboard → Input Sources** → use **U.S.** or **ABC** (a
+    British/ISO source mis-maps several symbol keys, not just tilde).
 
 ## GUI keymap editor
 
