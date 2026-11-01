@@ -75,6 +75,16 @@ cd tools/zmk-battery-menubar
 open ZMKBattery.app
 ```
 
+To install it for Spotlight and the macOS app launcher, run from the repo root:
+
+```bash
+bash tools/zmk-battery-menubar/install.sh
+```
+
+This builds and installs `~/Applications/ZMK Battery.app`. Search for **ZMK Battery**
+in Spotlight (Cmd+Space) or the app launcher to open it. Quit any running repo copy
+first. Run the installer again after updating the app's source.
+
 - Grant Bluetooth access when macOS asks (System Settings → Privacy & Security → Bluetooth).
 - The menu bar shows `⌨ 82/76`; click it for per-half detail and when it last updated.
 - Values refresh every `CONFIG_ZMK_BATTERY_REPORT_INTERVAL` seconds (currently 600, so up to
